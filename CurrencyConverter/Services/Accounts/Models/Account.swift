@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Account: Codable {
+struct Account: Codable, Equatable {
     let id: String
     let currency: Currency
     var amount: Decimal

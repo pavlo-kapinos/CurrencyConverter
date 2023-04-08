@@ -14,7 +14,7 @@ enum CustomError: Error {
     case invalidParams
 }
 
-struct CurrencyExchangeResponse: Codable {
+struct CurrencyExchangeResponse: Decodable {
     let amount, currency: String
 }
 

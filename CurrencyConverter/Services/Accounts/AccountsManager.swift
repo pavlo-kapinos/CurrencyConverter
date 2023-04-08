@@ -66,6 +66,12 @@ class AccountsManager {
         exchangeTransactionCounter = 0
         saveUserData()
     }
+    
+    func getAmountForCurrency(_ currency: Currency) -> Decimal {
+        let amount = accounts.first{ $0.currency == currency }?.amount
+        precondition(amount != nil)
+        return amount ?? 0.0
+    }
 }
 
 private extension AccountsManager {
@@ -99,7 +105,7 @@ private extension AccountsManager {
 //MARK: - Exchange Currency Operation
 
 enum CommissionConstants {
-    static let amountFirstFreeOfChargeTransaction = 5
+    static let amountFirstFreeOfChargeTransaction: UInt = 5
     static let chargePercentOnTransaction: Decimal = 0.7
 }
 

@@ -10,87 +10,95 @@ import XCTest
 
 final class AccountsMangerTests: XCTestCase {
     
+    let rateEurToUsd: Decimal = 1.09
+    var sut: AccountsManager!
+    
+    override func setUp() {
+        continueAfterFailure = false
+        sut = AccountsManager(balance: [.EUR: 1000, .USD: 5000])
+    }
+    
+    override func tearDown() {
+        sut = nil
+    }
+    
     func testInitialAccountsCreation() {
-        let manager = AccountsManager()
-        XCTAssertEqual(Currency.allCases.count, manager.accounts.count, "By one account for each currency.")
-        
-        let managerWithCustomBalance = AccountsManager(balance: [.EUR: 1000, .USD: 5000])
-        XCTAssertEqual(Currency.allCases.count, managerWithCustomBalance.accounts.count, "By one account for each currency.")
+        XCTAssertEqual(Currency.allCases.count, sut.accounts.count, "By one account for each currency.")
+        XCTAssertEqual(Currency.allCases.count, sut.accounts.count, "By one account for each currency.")
         
         let managerWithLoadBalance = AccountsManager(loadData: true)
         XCTAssertEqual(Currency.allCases.count, managerWithLoadBalance.accounts.count, "By one account for each currency.")
     }
     
     func testExchangeOperationWithFee() throws {
-        let manager = AccountsManager(balance: [.EUR: 1000, .USD: 5000])
-        let exchange = ExchangeCurrencyOperation(sourceAmount: 100.0,
+        let sellAmount = sut.getAmountForCurrency(.EUR)
+        let receiveAmount = sellAmount * rateEurToUsd
+        
+        let eurAmountOnStart = sut.getAmountForCurrency(.EUR)
+        let usdAmountOnStart = sut.getAmountForCurrency(.USD)
+        let exchange = ExchangeCurrencyOperation(sourceAmount: sellAmount,
                                                  sourceCurrency: .EUR,
-                                                 destinationAmount: 109.0,
+                                                 destinationAmount: receiveAmount,
                                                  destinationCurrency: .USD)
-        let exchangeReceipt = try manager.perform(operation: exchange) as? ExchangeCurrencyReceipt
-        let eurAccount = manager.accounts.first { $0.currency == .EUR }
-        let usdAccount = manager.accounts.first { $0.currency == .USD }
+        let exchangeReceipt = try sut.perform(operation: exchange) as? ExchangeCurrencyReceipt
+        let eurAmount = sut.getAmountForCurrency(.EUR)
+        let usdAmount = sut.getAmountForCurrency(.USD)
+        
         let receipt = try XCTUnwrap(exchangeReceipt)
-        XCTAssertEqual(eurAccount?.amount, 900.0 - receipt.commissionFee, "Not expected balance after an exchange operation")
-        XCTAssertEqual(usdAccount?.amount, 5109.0, "Not expected balance after an exchange operation")
+        XCTAssertEqual(eurAmount, eurAmountOnStart - sellAmount - receipt.commissionFee, "Not expected balance after an exchange operation")
+        XCTAssertEqual(usdAmount, usdAmountOnStart + receiveAmount, "Not expected balance after an exchange operation")
     }
     
     func testFreeOfChargeOperations() throws {
-        let manager = AccountsManager(balance: [.EUR: 1000, .USD: 5000])
+        let sellAmount = sut.getAmountForCurrency(.EUR) / Decimal(CommissionConstants.amountFirstFreeOfChargeTransaction)
         
         for _ in 0 ..< CommissionConstants.amountFirstFreeOfChargeTransaction {
-            let exchange = ExchangeCurrencyOperation(sourceAmount: 10.0,
+            let exchange = ExchangeCurrencyOperation(sourceAmount: sellAmount,
                                                      sourceCurrency: .EUR,
-                                                     destinationAmount: 10.9,
+                                                     destinationAmount: sellAmount * rateEurToUsd,
                                                      destinationCurrency: .USD)
-            let exchangeReceipt = try manager.perform(operation: exchange) as? ExchangeCurrencyReceipt
+            let exchangeReceipt = try sut.perform(operation: exchange) as? ExchangeCurrencyReceipt
             let receipt = try XCTUnwrap(exchangeReceipt)
             XCTAssertEqual(receipt.commissionFee, 0, "There should be no commission fee here.")
         }
     }
     
     func testCommissionFeeAndTransactionAmount() throws {
-        let manager = AccountsManager(balance: [.EUR: 1000, .USD: 5000])
-        
+        let transactionsCount = CommissionConstants.amountFirstFreeOfChargeTransaction * UInt(10) // make 10x transactions
+        let sellAmount = (sut.getAmountForCurrency(.EUR) / Decimal(transactionsCount)) / 2 // divide by 2 to include a commission fee
         var commissionFeeSum: Decimal = 0
         var lastTransactionNumber: UInt = 0
         
-        for _ in 0 ..< 100 {
-            let exchange = ExchangeCurrencyOperation(sourceAmount: 1.0,
+        for _ in 0 ..< transactionsCount {
+            let exchange = ExchangeCurrencyOperation(sourceAmount: sellAmount,
                                                      sourceCurrency: .EUR,
-                                                     destinationAmount: 1.09,
+                                                     destinationAmount: sellAmount * rateEurToUsd,
                                                      destinationCurrency: .USD)
-            let exchangeReceipt = try manager.perform(operation: exchange) as? ExchangeCurrencyReceipt
+            let exchangeReceipt = try sut.perform(operation: exchange) as? ExchangeCurrencyReceipt
             let receipt = try XCTUnwrap(exchangeReceipt)
             commissionFeeSum += receipt.commissionFee
             lastTransactionNumber = receipt.transactionNumber
         }
-        let multiplier = CommissionConstants.chargePercentOnTransaction / 100.0
-        XCTAssertEqual(commissionFeeSum, Decimal(100 - CommissionConstants.amountFirstFreeOfChargeTransaction) * multiplier,
+        let multiplier = CommissionConstants.chargePercentOnTransaction / 100
+        XCTAssertEqual(commissionFeeSum, Decimal(transactionsCount - CommissionConstants.amountFirstFreeOfChargeTransaction) * sellAmount * multiplier,
                        "The accumulated commission fee after 100 transactions has to be equal to the amount calculated by the formula.")
-        XCTAssertEqual(lastTransactionNumber, 99, "Transaction number in the last receipt has to be 99.")
+        XCTAssertEqual(lastTransactionNumber, transactionsCount - 1, "Transaction number in the last receipt has to be 99.")
     }
     
-    func testLoadDataFromThePreviousSession() throws {
-        let manager = AccountsManager(balance: [.EUR: 1000, .USD: 5000])
-        let eurAccount = manager.accounts.first { $0.currency == .EUR }
+    func testEqualityOfAccountsBetweenSession() throws {
+        let accounts = sut.accounts
         // next session
         let newManager = AccountsManager(loadData: true)
-        let eurAccount1 = newManager.accounts.first { $0.currency == .EUR }
-        let usdAccount1 = newManager.accounts.first { $0.currency == .USD }
-        
-        XCTAssertEqual(eurAccount!.id, eurAccount1!.id, "Account 'id' has changed between sessions.")
-        XCTAssertEqual(eurAccount1!.amount, 1000, "Amount of EUR has changed between sessions.")
-        XCTAssertEqual(usdAccount1!.amount, 5000, "Amount of EUR has changed between sessions.")
+        XCTAssertEqual(accounts, newManager.accounts, "The accounts has changed between sessions.")
     }
     
     func testExchangeOfTheSameCurrencyError() {
-        let manager = AccountsManager(balance: [.EUR: 1000])
-        let exchange = ExchangeCurrencyOperation(sourceAmount: 100.0,
+        let sellAmount = sut.getAmountForCurrency(.EUR)
+        
+        let exchange = ExchangeCurrencyOperation(sourceAmount: sellAmount,
                                                  sourceCurrency: .EUR,
-                                                 destinationAmount: 109.0,
+                                                 destinationAmount: sellAmount * rateEurToUsd,
                                                  destinationCurrency: .EUR)
-        XCTAssertThrowsError(try manager.perform(operation: exchange), "Expected error: ExchangeCurrencyError.theSameCurrency")
+        XCTAssertThrowsError(try sut.perform(operation: exchange), "Expected error: ExchangeCurrencyError.theSameCurrency")
     }
-    
 }

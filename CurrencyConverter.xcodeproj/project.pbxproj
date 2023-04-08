@@ -57,6 +57,7 @@
 		3E831D0C29DBFB7700EC49A2 /* FinanceReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceReceipt.swift; sourceTree = "<group>"; };
 		3E831D0E29DBFBB400EC49A2 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		3E831D1029DBFBD600EC49A2 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		3E85B57A29E007D500E7F7BD /* CurrencyConverter.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CurrencyConverter.xctestplan; sourceTree = "<group>"; };
 		3E8E41C729D9E97E006AA34E /* String+CurrencyFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CurrencyFormatting.swift"; sourceTree = "<group>"; };
 		3E9AEDBB29DC46DF00C7A3FB /* StubNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubNetworkManager.swift; sourceTree = "<group>"; };
 		3ED4659129D48D0A00906461 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +93,7 @@
 				3E0A9F2929DC34E300D4012A /* ExchangeViewControllerTests.swift */,
 				3E7E83AF29DC7C810033B29D /* AccountsMangerTests.swift */,
 				3E7B10F129DCAF8500073452 /* ExchangeViewModelTests.swift */,
+				3E85B57A29E007D500E7F7BD /* CurrencyConverter.xctestplan */,
 			);
 			path = CurrencyConverterTests;
 			sourceTree = "<group>";
