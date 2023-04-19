@@ -20,19 +20,19 @@ class ExchangeViewModel: ExchangeViewModelProtocol {
     @Published private(set) var receiveCurrency: Currency = .USD
     @Published private(set) var receiveAmount: Decimal?
 
-    var accountsPublisher: Published<[Account]>.Publisher { return accountsManager.$accounts }
-    var statePublisher: Published<State>.Publisher { return $state }
-    var sellCurrencyPublisher: Published<Currency>.Publisher { return $sellCurrency }
-    var receiveCurrencyPublisher: Published<Currency>.Publisher {return $receiveCurrency }
-    var receiveAmountPublisher: Published<Decimal?>.Publisher { return $receiveAmount }
+    var accountsPublisher: Published<[Account]>.Publisher { accountsManager.accountsPublisher }
+    var statePublisher: Published<State>.Publisher { $state }
+    var sellCurrencyPublisher: Published<Currency>.Publisher { $sellCurrency }
+    var receiveCurrencyPublisher: Published<Currency>.Publisher { $receiveCurrency }
+    var receiveAmountPublisher: Published<Decimal?>.Publisher { $receiveAmount }
 
     var fetchReceiveTimer: AnyCancellable?
 
-    let networkManager: NetworkManager
-    let accountsManager: AccountsManager
+    let networkManager: NetworkManagerProtocol
+    let accountsManager: AccountsManagerProtocol
     var availableCurrencies: [Currency] { return Currency.allCases.sorted { $0.code < $1.code } }
     
-    init(accountsManager: AccountsManager, networkManager: NetworkManager) {
+    init(accountsManager: AccountsManagerProtocol, networkManager: NetworkManagerProtocol) {
         self.accountsManager = accountsManager
         self.networkManager = networkManager
     }

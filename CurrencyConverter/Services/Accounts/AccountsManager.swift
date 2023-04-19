@@ -22,7 +22,9 @@ extension AccountUpdateError: LocalizedError {
     }
 }
 
-class AccountsManager {
+class AccountsManager: AccountsManagerProtocol {
+    var accountsPublisher: Published<[Account]>.Publisher { $accounts }
+    
     private enum DefaultsKeys {
         static let userAccounts = "AccountsManagerUserAccounts"
         static let exchangeTransactionCounter = "AccountsManagerExchangeTransactionCounter"

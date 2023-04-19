@@ -10,12 +10,14 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var dependency = DependencyProvider()
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        let exchangeVC = ExchangeViewController(networkManager: NetworkManager(config: .default), // FakeNetworkManager(),
-                                                accountsManager: AccountsManager(loadData: true))
+        
+        guard let exchangeVC = dependency.assembler.resolver.resolve(ExchangeViewController.self) else {
+            return false
+        }
         
         window = UIWindow(frame: UIScreen.main.bounds)
         let navController = UINavigationController(rootViewController: exchangeVC)
@@ -24,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
 
 }
 

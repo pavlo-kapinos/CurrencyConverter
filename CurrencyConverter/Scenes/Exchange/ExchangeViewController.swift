@@ -30,8 +30,8 @@ class ExchangeViewController: UIViewController {
     let vm: ExchangeViewModelProtocol
     
     //MARK: - Lifecycle
-    init(networkManager: NetworkManager, accountsManager: AccountsManager) {
-        vm = ExchangeViewModel(accountsManager: accountsManager, networkManager: networkManager)
+    init(vm: ExchangeViewModelProtocol) {
+        self.vm = vm
         super.init(nibName: "ExchangeViewController", bundle: nil)
     }
     

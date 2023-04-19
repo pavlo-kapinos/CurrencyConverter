@@ -25,6 +25,10 @@
 		3E831D1129DBFBD600EC49A2 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E831D1029DBFBD600EC49A2 /* Currency.swift */; };
 		3E8E41C829D9E97E006AA34E /* String+CurrencyFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8E41C729D9E97E006AA34E /* String+CurrencyFormatting.swift */; };
 		3E9AEDBC29DC46DF00C7A3FB /* StubNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9AEDBB29DC46DF00C7A3FB /* StubNetworkManager.swift */; };
+		3E9BBC4929EFCDB900502F7E /* ExchangeSceneAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9BBC4829EFCDB900502F7E /* ExchangeSceneAssembly.swift */; };
+		3E9BBC4B29EFD10A00502F7E /* DependencyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9BBC4A29EFD10A00502F7E /* DependencyProvider.swift */; };
+		3E9BBC4D29EFD5E500502F7E /* NetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9BBC4C29EFD5E500502F7E /* NetworkManagerProtocol.swift */; };
+		3E9BBC4F29EFD67700502F7E /* AccountsManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9BBC4E29EFD67700502F7E /* AccountsManagerProtocol.swift */; };
 		3ED4659529D48D0A00906461 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4659429D48D0A00906461 /* AppDelegate.swift */; };
 		3ED4659E29D48D0A00906461 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED4659D29D48D0A00906461 /* Assets.xcassets */; };
 		3ED465A929D48E9000906461 /* ExchangeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ED465A829D48E9000906461 /* ExchangeViewController.xib */; };
@@ -61,6 +65,10 @@
 		3E85B57A29E007D500E7F7BD /* CurrencyConverter.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CurrencyConverter.xctestplan; sourceTree = "<group>"; };
 		3E8E41C729D9E97E006AA34E /* String+CurrencyFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CurrencyFormatting.swift"; sourceTree = "<group>"; };
 		3E9AEDBB29DC46DF00C7A3FB /* StubNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubNetworkManager.swift; sourceTree = "<group>"; };
+		3E9BBC4829EFCDB900502F7E /* ExchangeSceneAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeSceneAssembly.swift; sourceTree = "<group>"; };
+		3E9BBC4A29EFD10A00502F7E /* DependencyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyProvider.swift; sourceTree = "<group>"; };
+		3E9BBC4C29EFD5E500502F7E /* NetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerProtocol.swift; sourceTree = "<group>"; };
+		3E9BBC4E29EFD67700502F7E /* AccountsManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsManagerProtocol.swift; sourceTree = "<group>"; };
 		3ED4659129D48D0A00906461 /* CurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED4659429D48D0A00906461 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3ED4659D29D48D0A00906461 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -114,6 +122,7 @@
 			children = (
 				3E673C3329D6EF2800C0B994 /* NetworkConfig.swift */,
 				3E673C3529D6EF5200C0B994 /* NetworkManager.swift */,
+				3E9BBC4C29EFD5E500502F7E /* NetworkManagerProtocol.swift */,
 				3E673C3729D6EF8000C0B994 /* FakeNetworkManager.swift */,
 			);
 			path = Network;
@@ -141,6 +150,7 @@
 			children = (
 				3E831D0929DBFAF100EC49A2 /* Models */,
 				3E673C3F29D716A700C0B994 /* AccountsManager.swift */,
+				3E9BBC4E29EFD67700502F7E /* AccountsManagerProtocol.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -172,6 +182,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		3E9BBC4729EFCD5800502F7E /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				3E9BBC4829EFCDB900502F7E /* ExchangeSceneAssembly.swift */,
+				3E9BBC4A29EFD10A00502F7E /* DependencyProvider.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		3ED4658829D48D0A00906461 = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +212,7 @@
 		3ED4659329D48D0A00906461 /* CurrencyConverter */ = {
 			isa = PBXGroup;
 			children = (
+				3E9BBC4729EFCD5800502F7E /* DI */,
 				3E43B97729D77C0C00799BB8 /* Interface */,
 				3E673C3A29D7162400C0B994 /* Services */,
 				3E673C3929D7153000C0B994 /* Scenes */,
@@ -344,12 +364,16 @@
 				3E43B97929D98A8200799BB8 /* ExchangeViewModel.swift in Sources */,
 				3E831D0B29DBFB5400EC49A2 /* FinanceOperation.swift in Sources */,
 				3E673C3629D6EF5200C0B994 /* NetworkManager.swift in Sources */,
+				3E9BBC4929EFCDB900502F7E /* ExchangeSceneAssembly.swift in Sources */,
 				3E831D0D29DBFB7700EC49A2 /* FinanceReceipt.swift in Sources */,
 				3E8E41C829D9E97E006AA34E /* String+CurrencyFormatting.swift in Sources */,
 				3E831D1129DBFBD600EC49A2 /* Currency.swift in Sources */,
 				3E673C4029D716A700C0B994 /* AccountsManager.swift in Sources */,
 				3ED465AD29D48F1500906461 /* ExchangeViewController.swift in Sources */,
+				3E9BBC4D29EFD5E500502F7E /* NetworkManagerProtocol.swift in Sources */,
+				3E9BBC4F29EFD67700502F7E /* AccountsManagerProtocol.swift in Sources */,
 				3E43B97629D75E6F00799BB8 /* StripeCollectionViewCell.swift in Sources */,
+				3E9BBC4B29EFD10A00502F7E /* DependencyProvider.swift in Sources */,
 				3E673C4529D7460A00C0B994 /* StripeCollectionView.swift in Sources */,
 				3ED4659529D48D0A00906461 /* AppDelegate.swift in Sources */,
 				3E673C3429D6EF2800C0B994 /* NetworkConfig.swift in Sources */,

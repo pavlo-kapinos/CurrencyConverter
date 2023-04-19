@@ -18,7 +18,7 @@ struct CurrencyExchangeResponse: Decodable {
     let amount, currency: String
 }
 
-class NetworkManager {
+class NetworkManager: NetworkManagerProtocol {
     let config: NetworkConfig
     
     init(config: NetworkConfig) {
