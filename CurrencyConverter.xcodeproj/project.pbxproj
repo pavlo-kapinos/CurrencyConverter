@@ -11,6 +11,7 @@
 		3E43B97629D75E6F00799BB8 /* StripeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E43B97529D75E6F00799BB8 /* StripeCollectionViewCell.swift */; };
 		3E43B97929D98A8200799BB8 /* ExchangeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E43B97829D98A8200799BB8 /* ExchangeViewModel.swift */; };
 		3E43B97B29D99CCB00799BB8 /* ExchangeViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E43B97A29D99CCB00799BB8 /* ExchangeViewModelProtocol.swift */; };
+		3E4B1E2429EF125300E6EBF3 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 3E4B1E2329EF125300E6EBF3 /* Swinject */; };
 		3E673C3429D6EF2800C0B994 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E673C3329D6EF2800C0B994 /* NetworkConfig.swift */; };
 		3E673C3629D6EF5200C0B994 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E673C3529D6EF5200C0B994 /* NetworkManager.swift */; };
 		3E673C3829D6EF8000C0B994 /* FakeNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E673C3729D6EF8000C0B994 /* FakeNetworkManager.swift */; };
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E4B1E2429EF125300E6EBF3 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +257,9 @@
 			dependencies = (
 			);
 			name = CurrencyConverter;
+			packageProductDependencies = (
+				3E4B1E2329EF125300E6EBF3 /* Swinject */,
+			);
 			productName = CurrencyConverter;
 			productReference = 3ED4659129D48D0A00906461 /* CurrencyConverter.app */;
 			productType = "com.apple.product-type.application";
@@ -287,6 +292,9 @@
 				Base,
 			);
 			mainGroup = 3ED4658829D48D0A00906461;
+			packageReferences = (
+				3E4B1E2229EF125300E6EBF3 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			productRefGroup = 3ED4659229D48D0A00906461 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -608,6 +616,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3E4B1E2229EF125300E6EBF3 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3E4B1E2329EF125300E6EBF3 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E4B1E2229EF125300E6EBF3 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3ED4658929D48D0A00906461 /* Project object */;
 }
