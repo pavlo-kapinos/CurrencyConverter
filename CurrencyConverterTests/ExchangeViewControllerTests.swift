@@ -14,8 +14,8 @@ final class ExchangeViewControllerTests: XCTestCase {
     
     override func setUp() {
         continueAfterFailure = false
-        sut = ExchangeViewController(networkManager: StubNetworkManager(),
-                                     accountsManager: AccountsManager())
+        let viewModel = ExchangeViewModel(accountsManager: AccountsManager(), networkManager: StubNetworkManager())
+        sut = ExchangeViewController(vm: viewModel)
         sut.loadViewIfNeeded()
     }
     

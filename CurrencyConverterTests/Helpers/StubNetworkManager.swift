@@ -8,20 +8,19 @@
 import Foundation
 
 @testable import CurrencyConverter
-class StubNetworkManager: NetworkManager {
+class StubNetworkManager: NetworkManagerProtocol {
     
-    private var exchangeResponse = CurrencyExchangeResponse(amount: "555.0", currency: "EUR")
+    private var exchangeResponse: CurrencyExchangeResponse
     
     init() {
-        super.init(config: .debug)
+        exchangeResponse = CurrencyExchangeResponse(amount: "555.0", currency: "EUR")
     }
     
     init(exchangeResponse: CurrencyExchangeResponse) {
         self.exchangeResponse = exchangeResponse
-        super.init(config: .debug)
     }
     
-    override func sendExchangeCurrencyRequest(amount: Decimal, source: Currency, destination: Currency, completion: @escaping (Result<CurrencyExchangeResponse, CustomError>) -> Void) {
+    func sendExchangeCurrencyRequest(amount: Decimal, source: Currency, destination: Currency, completion: @escaping (Result<CurrencyExchangeResponse, CustomError>) -> Void) {
         completion(.success(exchangeResponse))
     }
 }
