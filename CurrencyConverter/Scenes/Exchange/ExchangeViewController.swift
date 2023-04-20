@@ -97,12 +97,17 @@ class ExchangeViewController: UIViewController {
     
     //MARK: - Private
     private func binding() {
-        vm.accountsPublisher.sink { [weak self] accounts in
-            self?.accountsCollectionView.items = accounts.map { "\($0.amount.currencyString) \($0.currency)" }
-        }.store(in: &subscriptions)
+        vm.accountsPublisher
+            .subscribe(on: DispatchQueue.global())
+            .sink { [weak self] accounts in
+                self?.accountsCollectionView.items = accounts.map { "\($0.amount.currencyString) \($0.currency)" }
+            }
+            .store(in: &subscriptions)
         
-        vm.statePublisher.sink { [weak self] state in
-            DispatchQueue.main.async {
+        vm.statePublisher
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
                 switch state {
                 case .fetching:
                     self?.receiveAmountTextField.text = "Fetching..."
@@ -114,25 +119,28 @@ class ExchangeViewController: UIViewController {
                     self?.receiveAmountTextField.textColor = .systemGreen
                 }
             }
-        }.store(in: &subscriptions)
+            .store(in: &subscriptions)
         
-        vm.receiveAmountPublisher.sink { [weak self] value in
-            DispatchQueue.main.async {
+        vm.receiveAmountPublisher
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
                 if let value {
                     self?.receiveAmountTextField.text = "+ \(value.currencyString)"
                 } else {
                     self?.receiveAmountTextField.text = ""
                 }
             }
-        }.store(in: &subscriptions)
+            .store(in: &subscriptions)
         
-        Publishers.CombineLatest(vm.sellCurrencyPublisher, vm.receiveCurrencyPublisher).sink { [weak self] sellCurrency, receiveCurrency in
-            DispatchQueue.main.async {
+        Publishers.CombineLatest(vm.sellCurrencyPublisher, vm.receiveCurrencyPublisher)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] sellCurrency, receiveCurrency in
                 self?.updateCurrencyPopUpButtons(sellCurrency: sellCurrency, receiveCurrency: receiveCurrency)
                 self?.vm.refreshReceiveAmount()
             }
-        }
-        .store(in: &subscriptions)
+            .store(in: &subscriptions)
     }
     
     func updateCurrencyPopUpButtons(sellCurrency: Currency, receiveCurrency: Currency) {

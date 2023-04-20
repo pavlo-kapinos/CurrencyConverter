@@ -11,7 +11,13 @@ class StripeCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout
 
     private let cellReuseIdentifier = "StripeCellIdentifier"
     
-    var items: [String] = [] { didSet { reloadData() } }
+    var items: [String] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.reloadData()
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
